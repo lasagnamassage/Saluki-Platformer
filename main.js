@@ -21,8 +21,6 @@ else
 	var map = new Array;
 	window.mapLength = 0;
 	window.mapIsLoaded = false;
-	window.mapX = 0;
-	window.mapY = 0;
 	//Map Handling stuff
 	
 	
@@ -33,7 +31,7 @@ else
 		for(var i = 0; i < text.length; i++)
 		{
 				currentChar = text.charAt(i);
-				if(currentChar.match(/\r?\n|\r/))
+				if(currentChar.match(/\r?\n|\r/)) //newline regex. Some editors use \r, some \n, and some neither of these...decided it's best to just use our own
 				{
 					//don't collect newlines
 				}
