@@ -1,7 +1,7 @@
 # Saluki-Platformer
 Platformer based on our  school's mascot
 
-<h3><u>HOW TO MAKE A LEVEL</u></h3>:
+<h3><u>HOW TO MAKE A LEVEL</u></h3>
 <ol>
 <li>Open a .txt file in your preferred text editor</li>
 
@@ -17,4 +17,4 @@ Platformer based on our  school's mascot
 
 <li>Click "Choose File" under the canvas and select your file</li>
 
-*levelOne.txt is an example you can load to see an example
+<b>*levelOne.txt is an example you can load to see an example</b>
