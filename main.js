@@ -18,51 +18,58 @@ else
 	var PositionY = 0; //Defines the y Position of the player.
 	var drawX; //Defines the center x position from which the map is drawn.
 	var drawY; //Defines the center y position from which the map is drawn.
-	
-
+	var map = new Array;
+	window.mapLength = 0;
+	window.mapIsLoaded = false;
+	window.mapX = 0;
+	window.mapY = 0;
 	//Map Handling stuff
 	
-	function parseMap(map) {
-		var sentinelValue = '`';
-		var ground = '_';
-		var space = ' ';
+	
+	function removeNewlines(text) {
+		var newText = [];
+		var newTextPointer = 0;
 		var currentChar;
-		while(currentChar != sentinelValue)
+		for(var i = 0; i < text.length; i++)
 		{
-				//to be completed!
+				currentChar = text.charAt(i);
+				if(currentChar.match(/\r?\n|\r/))
+				{
+					//don't collect newlines
+				}
+				else
+				{
+						newText[newTextPointer] = currentChar;
+						newTextPointer++;
+				}
 		}
+		return newText;
 	}
+
+	
+				
 	function loadLevel() {
 			var selectedFile = document.getElementById('levelFiles').files[0];
 			var textType = /text.*/; //basic regex. Needs to be more concise to not allow .html files
-			
 			if (selectedFile.type.match(textType))
 			{
 					var reader = new FileReader();
 					reader.readAsText(selectedFile);
 					reader.onload = function(e) {
 							var rawMap = (reader.result);
-							
-							//var parsedMap = parseMap(rawMap);
-							/*
-							for(var i = 0; i < 30; i++)
+							var arrayMap = removeNewlines(rawMap);
+							for(var i = 0; i < arrayMap.length; i++)
 							{
-								for(var j = 0; j < 40; j++)
-								{
-										switch(rawMap[k]) {
-											case '_':
-												setTile(currentX,currentY,"Tile");
-												break;
-											case ' ':
-												set
-										}
-								}
-							}*/
+								map.push(arrayMap[i]);
+							}
+							window.mapLength = map.length;
+							window.mapIsLoaded = true;
 					}		
 			}
 			else
 			{
 				console.log("File type not supported!");
+				return 1; 
 			}
 	}
 	//end Map Handling stuff
@@ -91,51 +98,52 @@ else
 	//End Keyboard Stuff
 
 	//Game Loop Stuff
-	function gameLoop() {
-		//where the magic happens	
-		draw();
+	function draw() {
+		//where animation happens
+		drawMap();
 	}
 	setInterval(draw,10); //run "draw" function every 10 milliseconds (100 fps)
 	//End Game Loop Stuff
 
-	function draw(){
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		drawMap();
-		drawSprites();
-		drawPlayer();
-		drawInfo();
-	}
-
-	function drawMap(){ //Draws the bricks
-		
-		// Drawing a primitive test map that is just a straight line.
-		createTile();
+	function drawMap(){
+		var mapX = 0;
+		var mapY = 0;
+		if (mapIsLoaded)
+		{
+			for(var j = 0; j < mapLength; j++)
+			{
+				if(typeof map[j] !== 'undefined')
+				{
+						switch(map[j]) {
+							case '_': //ground token
+								createTile(mapX,mapY);
+								mapX+=brickSize;
+								break;
+							case 'O': //air token
+							case ' ':
+								mapX+=brickSize;
+								break;
+							case ']': //custom newline token
+								mapY+=brickSize; 
+								mapX=0;
+								break;
+							default:
+								alert("MAP CONTAINS INVALID CHARACTERS");
+								return 1;
+						}
+				}
+			}
+		}
 	}
 
 	//Game Object Stuff
-	function createTile() {
-			for(xStep=0;xStep<canvas.width/brickSize;xStep++)
-		{
+	function createTile(x,y) {
 		ctx.beginPath();
-		ctx.rect(xStep*brickSize + PositionX, canvas.height/2, brickSize, brickSize);
+		ctx.rect(x,y,brickSize, brickSize);
 		ctx.fillStyle = "silver";
 		ctx.strokeStyle = "black";
 		ctx.fill();
 		ctx.stroke();
 		ctx.closePath();
-
-		}
-	}
-
-	function drawSprites(){ //Draws the sprites (extra objects on the map)
-		
-	}
-
-	function drawPlayer(){ //Draws the player character, Grey Dog. 
-		
-	}
-
-	function drawInfo(){ //Draws an information bar with score, stats, etc.
-		
 	}
 }
