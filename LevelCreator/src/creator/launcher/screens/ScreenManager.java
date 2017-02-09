@@ -1,6 +1,6 @@
-package com.game.launcher.screens;
+package creator.launcher.screens;
 
-import com.game.engine.Game;
+import creator.engine.Game;
 
 public class ScreenManager {
 

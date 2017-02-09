@@ -1,14 +1,9 @@
-package com.game.launcher;
+package creator.launcher;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-
-import com.game.engine.Game;
-import com.game.engine.GameThread;
-import com.game.launcher.screens.ScreenManager;
+import creator.engine.Game;
+import creator.engine.GameThread;
+import creator.launcher.screens.ScreenManager;
 
 public class Launcher extends Game{
 
@@ -20,9 +15,7 @@ public class Launcher extends Game{
 		
 		try{
 			
-			BufferedImage iconImage = ImageIO.read(new File("res/images/iconImage/controller-icon.png"));
-			
-			Launcher start = new Launcher("Noise Game Testing", 800, 600, 1, iconImage);
+			Launcher start = new Launcher("Noise Game Testing", 800, 600, 1);
 			
 			new GameThread(start).start();
 			
@@ -31,8 +24,8 @@ public class Launcher extends Game{
 		}
 	}
 	
-	public Launcher(String title, int width, int height, int scale, BufferedImage iconImage){
-		super(title, width, height, scale, iconImage);
+	public Launcher(String title, int width, int height, int scale){
+		super(title, width, height, scale);
 		// TODO: in here set the current screen using this
 		// screenManager.setScreen(new MenuScreen());
 	}

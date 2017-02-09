@@ -1,4 +1,4 @@
-package com.game.engine;
+package creator.engine;
 
 public class GameThread extends Thread {
 

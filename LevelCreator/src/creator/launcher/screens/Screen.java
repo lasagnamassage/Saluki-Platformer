@@ -1,4 +1,4 @@
-package com.game.launcher.screens;
+package creator.launcher.screens;
 
 import java.awt.Graphics2D;
 
