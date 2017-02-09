@@ -19,6 +19,10 @@ else
 	var drawX; //Defines the center x position from which the map is drawn.
 	var drawY; //Defines the center y position from which the map is drawn.
 	var map = new Array;
+	var upPressed;
+	var downPressed;
+	var rightPressed;
+	var leftPressed;
 	window.mapLength = 0;
 	window.mapIsLoaded = false;
 	//Map Handling stuff
@@ -78,36 +82,96 @@ else
 	function keyDownHandler(e) {
 			if(e.keyCode == 39) {
 				rightPressed = true;
-				PositionX += 4;
 			}
-			else if(e.keyCode == 37) {
+			if(e.keyCode == 37) {
 				leftPressed = true;
-				PositionX -= 4;
+			}	
+			if(e.keyCode == 38) {
+				upPressed = true;
+			}			
+			if(e.keyCode == 40) {
+				downPressed = true;
 			}
 		}
-		function keyUpHandler(e) {
+	function keyUpHandler(e) {
 			if(e.keyCode == 39) {
 				rightPressed = false;
 			}
-			else if(e.keyCode == 37) {
+			if(e.keyCode == 37) {
 				leftPressed = false;
+			}
+			if(e.keyCode == 38) {
+				upPressed = false;
+			}
+			if(e.keyCode == 40) {
+				downPressed = false;
 			}
 		}
 	//End Keyboard Stuff
 
 	//Game Loop Stuff
 	function draw() {
-		//where animation happens
 		drawMap();
+		drawDawg();
 	}
 	setInterval(draw,10); //run "draw" function every 10 milliseconds (100 fps)
 	//End Game Loop Stuff
+	setInterval(move,10);
+	setInterval(accelerate,10)
+	
+	function accelerate(){ //
+		if(upPressed)
+		{
+			PositionY+=10;
+		}
+		else if(!upPressed){
+		
+		}
+		
+		if(downPressed)
+		{
+			PositionY-=10;
+		}
+		else if(!downPressed)
+		{
+		
+		}
+		if(leftPressed)
+		{
+			PositionX+=10;
+		}
+		else if(!leftPressed){
+		
+		}
+		if(rightPressed)
+		{
+			PositionX-=10;
+		}
+		else if(!rightPressed){
+		
+		}
+	}
+	
+	function move(){
 
+	}
+	
+	function drawDawg(){
+		ctx.beginPath();
+		ctx.arc(400,300,10,0,2*Math.PI,false);
+		ctx.fillStyle = "blue";
+		ctx.strokeStyle = "black";
+		ctx.fill();
+		ctx.stroke();
+		ctx.closePath();
+	}
+	
 	function drawMap(){
 		var mapX = 0;
 		var mapY = 0;
 		if (mapIsLoaded)
 		{
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 			for(var j = 0; j < mapLength; j++)
 			{
 				if(typeof map[j] !== 'undefined')
@@ -136,12 +200,15 @@ else
 
 	//Game Object Stuff
 	function createTile(x,y) {
+		if(!(x<=-20 || x>=820 || y<=-20 || y>=620)) //Only draw if inside canvas
+		{
 		ctx.beginPath();
-		ctx.rect(x,y,brickSize, brickSize);
+		ctx.rect(x+PositionX,y+PositionY,brickSize, brickSize);
 		ctx.fillStyle = "silver";
 		ctx.strokeStyle = "black";
 		ctx.fill();
 		ctx.stroke();
 		ctx.closePath();
+		}
 	}
 }
