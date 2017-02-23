@@ -16,6 +16,8 @@ else
 	var brickSize = CANVAS_X/MAXTILES_X; //Defines the side lengths of the bricks.
 	var PositionX = 0; //Defines the x Position of the player.
 	var PositionY = 0; //Defines the y Position of the player.
+	var SpeedX = 0;
+	var SpeedY = 0;
 	var drawX; //Defines the center x position from which the map is drawn.
 	var drawY; //Defines the center y position from which the map is drawn.
 	var map = new Array;
@@ -122,7 +124,7 @@ else
 	function accelerate(){ //
 		if(upPressed)
 		{
-			PositionY+=10;
+			SpeedY+=1;
 		}
 		else if(!upPressed){
 		
@@ -130,7 +132,7 @@ else
 		
 		if(downPressed)
 		{
-			PositionY-=10;
+			SpeedY-=1;
 		}
 		else if(!downPressed)
 		{
@@ -138,22 +140,31 @@ else
 		}
 		if(leftPressed)
 		{
-			PositionX+=10;
+			if(SpeedX <= 3)
+				SpeedX+=1;
 		}
 		else if(!leftPressed){
 		
 		}
 		if(rightPressed)
 		{
-			PositionX-=10;
+			if(SpeedX >= -3)
+			SpeedX-=1;
 		}
-		else if(!rightPressed){
-		
+		else if(!rightPressed && !leftPressed){
+			if(SpeedX < 0)
+				SpeedX+=1;
+			else if(SpeedX > 0)
+				SpeedX-=1;
 		}
 	}
 	
 	function move(){
-
+		PositionX+=SpeedX;
+		PositionY+=SpeedY;
+		MapX = 20*(Math.round(PositionX/20));
+		MapY = 20*(Math.round(PositionY/20));
+		createTile(MapX*20,MapY*20);
 	}
 	
 	function drawDawg(){
@@ -167,8 +178,8 @@ else
 	}
 	
 	function drawMap(){
-		var mapX = 0;
-		var mapY = 0;
+		drawX = 0;
+		drawY = 0;
 		if (mapIsLoaded)
 		{
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -178,16 +189,16 @@ else
 				{
 						switch(map[j]) {
 							case '_': //ground token
-								createTile(mapX,mapY);
-								mapX+=brickSize;
+								createTile(drawX,drawY);
+								drawX+=brickSize;
 								break;
 							case 'O': //air token
 							case ' ':
-								mapX+=brickSize;
+								drawX+=brickSize;
 								break;
 							case ']': //custom newline token
-								mapY+=brickSize; 
-								mapX=0;
+								drawY+=brickSize; 
+								drawX=0;
 								break;
 							default:
 								alert("MAP CONTAINS INVALID CHARACTERS");
@@ -200,7 +211,7 @@ else
 
 	//Game Object Stuff
 	function createTile(x,y) {
-		if(!(x<=-20 || x>=820 || y<=-20 || y>=620)) //Only draw if inside canvas
+		if(!((x+PositionX)<=-20 || (x+PositionX)>=820 || (y+PositionY)<=-20 || (y+PositionY)>=620)) //Only draw if inside canvas
 		{
 		ctx.beginPath();
 		ctx.rect(x+PositionX,y+PositionY,brickSize, brickSize);
