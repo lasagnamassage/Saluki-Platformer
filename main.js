@@ -25,6 +25,7 @@ else
 	var downPressed;
 	var rightPressed;
 	var leftPressed;
+	var showCoordinates = true;
 	window.mapLength = 0;
 	window.mapIsLoaded = false;
 	//Map Handling stuff
@@ -124,32 +125,31 @@ else
 	function accelerate(){ //
 		if(upPressed)
 		{
-			SpeedY+=1;
+			if(SpeedY <= 3)
+				SpeedY+=1;
 		}
-		else if(!upPressed){
-		
-		}
-		
 		if(downPressed)
 		{
-			SpeedY-=1;
+			if(SpeedY >= -3)
+				SpeedY-=1;
 		}
-		else if(!downPressed)
-		{
 		
+		// Replace with gravity function
+		else if(!downPressed && !upPressed){
+			if(SpeedY < 0)
+				SpeedY+=1;
+			else if(SpeedY > 0)
+				SpeedY-=1;
 		}
 		if(leftPressed)
 		{
-			if(SpeedX <= 3)
-				SpeedX+=1;
-		}
-		else if(!leftPressed){
-		
+			if(SpeedX >= -3)
+				SpeedX-=1;
 		}
 		if(rightPressed)
 		{
-			if(SpeedX >= -3)
-			SpeedX-=1;
+			if(SpeedX <= 3)
+			SpeedX+=1;
 		}
 		else if(!rightPressed && !leftPressed){
 			if(SpeedX < 0)
@@ -160,16 +160,31 @@ else
 	}
 	
 	function move(){
+		if(SpeedX > 0) //Check if collision to the right.
+		{
+			
+		}
+		else if (SpeedX < 0) //Check if collision to the left.
+		{
+		
+		}
+		if (SpeedY > 0) //Check if collision up.
+		{
+		
+		}
+		else if (SpeedY < 0) //Check if collision down.
+		{
+		
+		}		
 		PositionX+=SpeedX;
 		PositionY+=SpeedY;
-		MapX = 20*(Math.round(PositionX/20));
-		MapY = 20*(Math.round(PositionY/20));
-		createTile(MapX*20,MapY*20);
+		MapX = Math.round(PositionX/20);
+		MapY = Math.round(PositionY/20);
 	}
 	
 	function drawDawg(){
 		ctx.beginPath();
-		ctx.arc(400,300,10,0,2*Math.PI,false);
+		ctx.arc(400,310,10,0,2*Math.PI,false);
 		ctx.fillStyle = "blue";
 		ctx.strokeStyle = "black";
 		ctx.fill();
@@ -180,9 +195,10 @@ else
 	function drawMap(){
 		drawX = 0;
 		drawY = 0;
+				
 		if (mapIsLoaded)
 		{
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			for(var j = 0; j < mapLength; j++)
 			{
 				if(typeof map[j] !== 'undefined')
@@ -206,15 +222,23 @@ else
 						}
 				}
 			}
+						
+			// Block to print position for map debugging.
+			if(showCoordinates){
+			ctx.font = "15px Georgia";
+			ctx.fillStyle = 'black';
+			ctx.fillText("Position is (" + PositionX + "," + PositionY + ") ",10,50);
+			ctx.fillText("Current Brick is (" + MapX + "," + MapY + ") ",10,30);
+			}
 		}
 	}
 
 	//Game Object Stuff
 	function createTile(x,y) {
-		if(!((x+PositionX)<=-20 || (x+PositionX)>=820 || (y+PositionY)<=-20 || (y+PositionY)>=620)) //Only draw if inside canvas
+		if(!((x-PositionX)<=-20 || (x-PositionX)>=820 || (y+PositionY)<=-20 || (y+PositionY)>=620)) //Only draw if inside canvas
 		{
 		ctx.beginPath();
-		ctx.rect(x+PositionX,y+PositionY,brickSize, brickSize);
+		ctx.rect(x-PositionX,y+PositionY,brickSize, brickSize);
 		ctx.fillStyle = "silver";
 		ctx.strokeStyle = "black";
 		ctx.fill();
