@@ -12,6 +12,7 @@
 				padding-bottom:2%;
 			}
 			
+			
 			.box {
 				width:30px;
 				height:30px;
@@ -20,14 +21,27 @@
 				display:inline-block;
 			}
 			
+			.box:hover {
+				cursor:pointer;
+				background-color:blue;
+			}
 		
+			#legendbox {
+				width:200px;
+				margin:auto;
+			}
 			
 		</style>
 	</head>
 		
 	<body>
 		<h3>Level Creator</h3>
-		<h6>(1 height = 1 tile)</h6>
+		<fieldset id = "legendbox">
+			<legend>Legend</legend>
+			(1 height = 1 tile)<br/>
+			Grey Box = Space<br/>
+			Black Box = Platform<br/>
+		</fieldset>
 		<div id = "dimensionsFields">
 			Height:<br/>
 			<input type="text"/ id="height"><br/><br/>
@@ -37,7 +51,7 @@
 		</div>
 		
 		<div id = "workspace">
-		<!--
+		
 			<div class = "rowContainer">
 				<div class="box"></div>
 				<div class="box"></div>
@@ -118,7 +132,7 @@
 				<div class="box"></div>
 				<div class="box"></div>
 			</div>
-			-->
+			
 		</div>
 		<script src="levelcreator.js"></script>
 	</body>
