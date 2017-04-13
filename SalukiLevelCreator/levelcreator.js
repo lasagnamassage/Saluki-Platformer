@@ -1,25 +1,27 @@
-﻿var workSpace = document.getElementById("workSpace");
+var workSpace = document.getElementById("workspace");
 var heightInput = document.getElementById("height");
 var widthInput = document.getElementById("width");
+var fileName = document.getElementById("filename");
 var height, width;
 const MAX = 50;
 var rows = [];
+
+
 var Row = function(numColumns) {
-	this.numColumns=numColumns;
-	this.boxes = [];
-	this.createRow = function() {
-		var node = document.createElement("DIV");
-		node.classname="row-container";
+	this.columns = numColumns;
+	this.createEntity = function() {
+		var rowDiv = document.createElement('div');
+		rowDiv.className = "rowContainer";
+
+		workSpace.appendChild(rowDiv);
 		for (var i = 0; i < numColumns; i++)
 		{
-				var innernode = document.createElement("DIV");
-				innernode.classname="Box";
-				var box = new Box(innernode);
-				this.boxes.push(box);
-				node.appendChild(innernode);
+			var colDiv = document.createElement('div');	
+			colDiv.className = "box";
+			rowDiv.appendChild(colDiv);
 		}
-		workSpace.appendChild(node);
-	};
+		
+	}; 
 }
 
 var Box = function(node) {
@@ -28,7 +30,8 @@ var Box = function(node) {
 function submitInputs() {
 	var h = heightInput.value;
 	var w = widthInput.value;
-	if (isNaN(h) || isNaN(w) || h == "" || w == "")
+	var fn = fileName.value;
+	if (isNaN(h) || isNaN(w) || h == "" || w == "" || fn == "") //input check
 		alert("Ya dun goofed");
 	else if (h > MAX || w > MAX || h < 0 || w < 0)
 	{
@@ -49,7 +52,11 @@ function drawMap(dimensions) {
 	for (var i = 0; i < r; i++)
 	{
 			var row = new Row(c);
-			row.createRow();
+			row.createEntity();
 			rows.push(row);
+
 	}
+		//To-Do: Lock input fields unless 'reset' is pressed to prevent duplication maps
+	
+
 }
